@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>14 de Febrero 💗</title>
 
 <style>
 body {
   margin: 0;
-  font-family: 'Arial', sans-serif;
+  font-family: Arial, sans-serif;
   background: linear-gradient(180deg, #ffd1dc, #e6c9ff);
   overflow: hidden;
   color: #5a2a44;
@@ -24,17 +24,11 @@ body {
 
 .active { display: block; }
 
-h1 {
-  font-size: 2.3em;
-  color: #b84d6f;
-}
-
-p {
-  font-size: 1.25em;
-}
+h1 { font-size: 2.3em; color: #b84d6f; }
+p { font-size: 1.25em; }
 
 button {
-  background: #fff;
+  background: white;
   color: #b84d6f;
   border: none;
   padding: 15px 25px;
@@ -48,18 +42,16 @@ button {
 /* Carta */
 .letter {
   background: rgba(255,255,255,0.9);
-  color: #5a2a44;
   border-radius: 20px;
   padding: 25px;
   max-width: 360px;
   margin: auto;
-  font-size: 1.1em;
   line-height: 1.6;
   min-height: 260px;
   white-space: pre-line;
 }
 
-/* Corazón que late */
+/* Corazón final */
 .heart-beat {
   display: inline-block;
   margin-top: 10px;
@@ -68,10 +60,9 @@ button {
 }
 
 @keyframes beat {
-  0%   { transform: scale(1); }
-  30%  { transform: scale(1.3); }
-  60%  { transform: scale(1); }
-  100% { transform: scale(1); }
+  0% { transform: scale(1); }
+  30% { transform: scale(1.3); }
+  60% { transform: scale(1); }
 }
 
 /* Imagen */
@@ -91,18 +82,18 @@ img {
   margin-top: 15px;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
 @keyframes pulse {
   0% { transform: scale(1); opacity: 0.7; }
   50% { transform: scale(1.1); opacity: 1; }
   100% { transform: scale(1); opacity: 0.7; }
 }
 
-/* Flotantes */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Besos */
 .floating {
   position: absolute;
   bottom: -20px;
@@ -126,14 +117,15 @@ img {
 <body>
 
 <audio id="musica" loop>
-  <source src="bts.mp3" type="audio/mpeg">
+  <source src="bts.mp3" type="audio/mpeg" />
+  Tu navegador no soporta audio HTML5.
 </audio>
 
 <!-- Pantalla 1 -->
 <div class="screen active" id="s1">
   <h1>Hola amor 💗</h1>
   <p>Esto es algo que quería darte desde el corazón…</p>
-  <button onclick="go(2)">Continuar</button>
+  <button onclick="go(2); playMusic()">Continuar</button>
 </div>
 
 <!-- Pantalla 2 -->
@@ -141,18 +133,18 @@ img {
   <h1>¿Quieres ser mi San Valentín? 💘</h1>
   <div class="date">14 · 02 · 2026 💌</div>
   <button onclick="go(3)">💗 Sí</button>
-  <button id="maybeBtn">😳 Tal vez</button>
+  <button id="maybeBtn" style="position: static;">😳 Tal vez</button>
 </div>
 
 <!-- Pantalla 3 -->
 <div class="screen" id="s3">
   <h1>You are my Euphoria ✨</h1>
   <p>Todo es más bonito cuando estoy contigo</p>
-  <img src="foto.jpg" alt="Nosotros">
+  <img src="foto.JPG" alt="Nosotros" />
   <button onclick="go(4)">Siguiente</button>
 </div>
 
-<!-- Pantalla 4 - CARTA -->
+<!-- Pantalla 4 -->
 <div class="screen" id="s4">
   <h1>Para ti 💌</h1>
   <div class="letter" id="letter"></div>
@@ -182,11 +174,17 @@ img {
 function go(n) {
   document.querySelector('.active').classList.remove('active');
   document.getElementById('s' + n).classList.add('active');
-
   if (n === 4 && !cartaEscrita) escribirCarta();
 }
 
-// Texto de la carta
+function playMusic() {
+  const audio = document.getElementById('musica');
+  audio.play().catch(() => {
+    // Manejo de error por autoplay en móviles
+  });
+}
+
+/* Carta */
 const textoCarta = `
 No sé en qué momento te volviste
 tan importante para mí,
@@ -213,7 +211,6 @@ function escribirCarta() {
     i++;
     if (i >= textoCarta.length) {
       clearInterval(intervalo);
-      // Corazón final
       const heart = document.createElement("div");
       heart.className = "heart-beat";
       heart.innerHTML = "💗";
@@ -222,20 +219,20 @@ function escribirCarta() {
   }, 45);
 }
 
-// Mensaje secreto
+/* Secreto */
 function mostrarSecreto() {
   document.getElementById('secreto').style.display = 'block';
 }
 
-// Final
+/* Final */
 function final() {
-  document.getElementById('musica').play();
+  playMusic();
   go(6);
   lanzarBesos();
   if (navigator.vibrate) navigator.vibrate([200,100,200]);
 }
 
-// Botón Tal vez que huye y se rinde
+/* Botón Tal vez */
 const maybe = document.getElementById("maybeBtn");
 let intentos = 0;
 
@@ -244,18 +241,22 @@ maybe.addEventListener("touchstart", mover);
 
 function mover() {
   intentos++;
+
   if (intentos >= 5) {
     maybe.innerHTML = "😅 Ok… sí 💗";
     maybe.onclick = () => go(3);
     maybe.style.position = "static";
     return;
   }
+
   maybe.style.position = "absolute";
-  maybe.style.left = Math.random() * (window.innerWidth - 120) + "px";
-  maybe.style.top = Math.random() * (window.innerHeight - 60) + "px";
+  const maxX = window.innerWidth - maybe.offsetWidth - 20;
+  const maxY = window.innerHeight - maybe.offsetHeight - 20;
+  maybe.style.left = Math.random() * maxX + "px";
+  maybe.style.top = Math.random() * maxY + "px";
 }
 
-// Besos
+/* Besos */
 function lanzarBesos() {
   setInterval(() => {
     const kiss = document.createElement("div");
